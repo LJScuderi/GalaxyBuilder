@@ -1,0 +1,34 @@
+Development plan:
+
+1: get system generation working
+    generate coordinates (figure out weighting)
+    generate star(s)
+        generate planets
+            generate moon(s)
+        generate station(s)
+        generate asteroid belt(s)
+    
+2: generate a galaxy and save it to a file
+    generate systems
+    generate dust and gas clouds
+
+3: get visualization working
+    plotly
+    plot individual system 
+        2d map(?) with orbits, belts, planets, stations
+        color code planets
+        inset for gas giant moons
+    plot galaxy
+        interactive 3d? (plotly somehow?)
+            hover text indicates name and planets?
+            select two systems find travel time
+        2d top down
+            hover text
+        
+
+4: implement into GUI (pysimplegui?)
+    gui for generation
+    separate one for vis? or separate tab(s)
+
+5: customization
+    ability to add in custom systems or other elements
