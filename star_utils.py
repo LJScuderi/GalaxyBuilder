@@ -1,5 +1,6 @@
 from ast import Raise
 from typing import Tuple
+import warnings
 import numpy as np
 
 import constants as const
@@ -85,8 +86,8 @@ def habitable_zone(luminosity: float) -> Tuple[float, float]:
     Returns:
         Tuple[float, float]: Inner and outer edges in AU
     """
-    rin = np.sqrt(luminosity / 1.1)
-    rout = np.sqrt(luminosity / 0.53)
+    rin = np.sqrt(luminosity / 1.2)
+    rout = np.sqrt(luminosity / 0.5)
     return rin, rout
 
 
@@ -113,11 +114,18 @@ def stellar_class(temp: float) -> str:
     Returns:
         str: Stellar classification
     """
+    if 30000 < temp:
+        type = "O"
+        mint = 30000.0
+        trange = 50000.0 - mint
+    if 10000 < temp < 30000:
+        type = "B"
+        mint = 10000.0
+        trange = 30000.0 - mint
     if 7300 <= temp < 10000:
         type = "A"
         mint = 7300.0
         trange = 10000 - mint
-        stage = "V"
     elif 6000 <= temp < 7300:
         type = "F"
         mint = 6000
@@ -143,9 +151,7 @@ def stellar_class(temp: float) -> str:
         mint = 600.0
         trange = 1300.0 - mint
     else:
-        raise ValueError("Star Temperature out of bounds for habitability")
-        # then subtract min & divide by span & * 10 floor
-        # then 9-floor
+        warnings.warn(f"Star Temperature {temp} out of bounds for habitability.")
     stype = int(9 - 10 * (temp - mint) / trange)
     return type + str(stype)
 
