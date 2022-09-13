@@ -10,6 +10,7 @@ import star_utils as sutil
 import planet_utils as putil
 import constants as const
 import atmospheres as atms
+import positioner as posi
 
 
 @dataclass(frozen=True)
@@ -229,9 +230,7 @@ def generate_star(index: int) -> Star:
 
 def generate_system(map_size: float, index: int) -> StarSystem:
     # generate coordinates
-    sysx = random.uniform(0, map_size)
-    sysy = random.uniform(0, map_size)
-    sysz = random.uniform(0, map_size)
+    sysx, sysy, sysz = posi.local_kpc(xymax=map_size)
     # generate star
     star = generate_star(index=index)
     # get number of planets
@@ -268,16 +267,12 @@ def test_func() -> None:
     return
 
 
-def main():
-    random.seed(a=4)
-    # generate systems
-    test1: StarSystem = generate_system(map_size=1000, index=0)
-    test1.star.getitems()
-    nplanets = len(test1.planets)
+def visualize_solar_system(ssystem: StarSystem):
+    nplanets = len(ssystem.planets)
     x = []
     y = np.arange(nplanets)
     colors = []
-    for planet in test1.planets:
+    for planet in ssystem.planets:
         planet.getitems()
         x.append(planet.sma)
         if planet.type == "T":
@@ -290,11 +285,15 @@ def main():
             colors.append("orange")
 
     plt.scatter(x, y, c=colors)
-    plt.vlines(test1.star.hab_zone, 0, nplanets, colors=["green"])
+    plt.vlines(ssystem.star.hab_zone, 0, nplanets, colors=["green"])
     plt.show()
-    # generate ISM
-    # save results
-    # test_func()
+
+
+def main():
+    random.seed(a=4)
+    # generate systems
+    test1: StarSystem = generate_system(map_size=500.0, index=0)
+    test1.star.getitems()
 
 
 if __name__ == "__main__":
