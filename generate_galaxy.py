@@ -267,28 +267,6 @@ def test_func() -> None:
     return
 
 
-def visualize_solar_system(ssystem: StarSystem):
-    nplanets = len(ssystem.planets)
-    x = []
-    y = np.arange(nplanets)
-    colors = []
-    for planet in ssystem.planets:
-        planet.getitems()
-        x.append(planet.sma)
-        if planet.type == "T":
-            colors.append("green")
-        elif planet.type == "S":
-            colors.append("grey")
-        elif planet.type == "N":
-            colors.append("blue")
-        else:
-            colors.append("orange")
-
-    plt.scatter(x, y, c=colors)
-    plt.vlines(ssystem.star.hab_zone, 0, nplanets, colors=["green"])
-    plt.show()
-
-
 def main():
     random.seed(a=4)
     # generate systems
