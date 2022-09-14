@@ -1,5 +1,7 @@
 import numpy as np
 
+import visualize as vis
+
 
 def randomize_pos_in_bin(bins: np.ndarray) -> np.ndarray:
     return [num + np.random.uniform(0, 1) for num in bins]
@@ -16,7 +18,7 @@ def find_prob_array(sig: float, arr: np.ndarray) -> np.ndarray:
     return prob
 
 
-def generate_disc():
+def generate_disc() -> tuple[float, float, float]:
     bins = np.arange(-50, 51)
     xysig = 2.5
     zsig = 0.5
@@ -29,6 +31,7 @@ def generate_disc():
     x = randomize_pos_in_bin(xbin)
     y = randomize_pos_in_bin(ybin)
     z = randomize_pos_in_bin(zbin)
+    return x, y, z
 
 
 def local_kpc(xymax: float = 500.0, nstars: int = 1) -> tuple[float, float, float]:
@@ -48,7 +51,7 @@ def local_kpc(xymax: float = 500.0, nstars: int = 1) -> tuple[float, float, floa
 
 def main():
     x, y, z = local_kpc(xymax=500, nstars=1000)
-    vis_gal(x, y, z, 500.0)
+    vis.vis_gal(x, y, z, 500.0)
 
 
 if __name__ == "__main__":

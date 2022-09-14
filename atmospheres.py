@@ -1,9 +1,7 @@
 import numpy as np
-from GalaxyBuilder.planet_utils import teff
 
-import constants as const
 import planet_utils as p_util
-from generate_galaxy import Star, Planet, Atmosphere
+from generate_galaxy import Atmosphere
 
 
 def gen_terrestrial_atmos(lum: float, sma: float, p_atmos: float, lil_g: float) -> Atmosphere:

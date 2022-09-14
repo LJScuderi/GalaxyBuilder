@@ -1,16 +1,16 @@
 Development plan:
 
 1: get system generation working
-    generate coordinates (figure out weighting)
-    generate star(s)
-        generate planets
-            generate moon(s)
-        generate station(s)
-        generate asteroid belt(s)
+x    generate coordinates (figure out weighting)
+x    generate star(s)
+x        generate planets
+s            generate moon(s)
+s        generate station(s)
+s        generate asteroid belt(s)
     
 2: generate a galaxy and save it to a file
-    generate systems
-    generate dust and gas clouds
+x    generate systems
+s    generate dust and gas clouds
 
 3: get visualization working
     plotly
@@ -18,7 +18,7 @@ Development plan:
         2d map(?) with orbits, belts, planets, stations
         color code planets
         inset for gas giant moons
-    plot galaxy
+     plot galaxy
         interactive 3d? (plotly somehow?)
             hover text indicates name and planets?
             select two systems find travel time

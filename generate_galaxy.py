@@ -1,99 +1,17 @@
-from dataclasses import dataclass
-from typing import List, Tuple
 from string import ascii_lowercase as letters
 import random
 import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
+from pathlib import Path
 
 import star_utils as sutil
 import planet_utils as putil
 import constants as const
 import atmospheres as atms
 import positioner as posi
-
-
-@dataclass(frozen=True)
-class Atmosphere:
-    scale_height: float  # km
-    pressure: float  # surface pressure in atmospheres
-    comp: dict  # composition, two main species
-    eta: float  # absorbtion factor
-    temp: float  # average surface temp in K
-    ocean: float  # surface ocean coverage fraction
-    albedo: float  # surface albedo
-
-    def __post_init__(self):
-        assert sum(self.comp.values()) == 1, "Composition percentages do not sum to 1"
-
-    def getitems(self):
-        print(vars(self))
-
-
-@dataclass(frozen=True)
-class Planet:
-    name: str  # planet name
-    parent: str  # Parent star
-    type: str  # plaent type
-    mass: float  # mass in earth masses
-    sma: float  # semimajor axis in AU
-    axial_tilt: float  # degrees
-    rotation_period: float  # days
-    radius: float  # earth units
-    density: float  # kg/m^3
-    atmos: Atmosphere  # a class holding atmosphere properties
-    moons: dict  # dict of moon orbital distance (in planet radii) to mass (in planet masses)
-    gravity: float  # surface/1bar gravity in g
-
-    def getitems(self):
-        print(vars(self))
-
-
-@dataclass(frozen=True)
-class Station:
-    population: float
-    name: str
-    type: str
-    parent: str
-
-    def getitems(self):
-        print(vars(self))
-
-
-@dataclass(frozen=True)
-class Star:
-    name: str
-    temperature: float  # Surface temp in Kelvin
-    mass: float  # mass in solar masses
-    age: float  # Age in GYr
-    metallicity: float  # Metallicity in solar units
-    magnitude: float
-    luminosity: float
-    radius: float
-    hab_zone: List[float]
-    lifespan: float
-    harv_class: str
-
-    def getitems(self):
-        print(vars(self))
-
-
-@dataclass(frozen=True)
-class StarSystem:
-    gal_x: float  # Galactic X position in pc from Earth (spin/antispin)
-    gal_y: float  # Galactic Y position in pc from Earth (coreward/rimward)
-    gal_z: float  # Galactic Z position in pc from Earth (north/south polar)
-    star: Star
-    planets: List[Planet]
-
-    def getitems(self):
-        print("X: ", self.gal_x)
-        print("Y: ", self.gal_y)
-        print("Z: ", self.gal_z)
-        print("N_planets: ", len(self.planets))
-
-    # stations: List[Station]
-    # asteroid_belts: dict  # dict of asteroid belts listing belt number and distance from star (AU)
+import visualize as vis
+from utils import Star, Planet, StarSystem, write_pickle, Atmosphere
 
 
 def gen_subearth(star: Star, sma: float, name: str, type: str) -> Planet:
@@ -267,11 +185,21 @@ def test_func() -> None:
     return
 
 
-def main():
+def generate_systems(nsystems: int) -> None:
+    nsystems = 1000
     random.seed(a=4)
+    galaxy = []
     # generate systems
-    test1: StarSystem = generate_system(map_size=500.0, index=0)
-    test1.star.getitems()
+    for n in tqdm(range(nsystems)):
+        galaxy.append(generate_system(map_size=500.0, index=n))
+
+    write_pickle(galaxy, Path("Data/gen_galaxy_a"))
+
+
+def main():
+    galaxy = vis.load_pickle(Path("Data/gen_galaxy_a"))
+    sample: StarSystem = np.random.choice(galaxy)
+    vis.solar_system_above(sample)
 
 
 if __name__ == "__main__":
